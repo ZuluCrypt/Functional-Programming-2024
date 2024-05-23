@@ -26,3 +26,20 @@ let builtinrevers list =
 
 let reversedList = reverse  mylist2// testing the function reverse
 let builtInReversedList = builtinrevers built_in_list// testing the function builtInreversal
+
+
+
+
+
+
+let rec checkIfDivisible num =
+        if num % 2 <> 0 then    
+            num
+        else
+            checkIfDivisible (num/2)
+    
+        
+
+checkIfDivisible 8
+
+
