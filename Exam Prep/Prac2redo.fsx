@@ -58,3 +58,38 @@ let built_in_listtake n l =
     takeElements [] n l
 built_in_listtake 3 built_in_list
 
+
+//Prac 2
+//function to drop first n elements, notice we only returning the remaining list, not using an accummalator but just removing items as we count down
+let rec listDrop n list =
+    match (n,list) with 
+        |(0,remaining) -> remaining
+        |(_,[]) -> []
+        |(_,_::rest) -> listDrop (n - 1) rest
+
+listDrop 3 built_in_list
+
+// create a listInsert Function which pushes a value in the right position of a sorted list
+type Option =
+    |None
+    |Some of int
+
+let unsorted =[8; 4; 3; 1; 6; 1]
+let listSort list =
+    match list with
+    | [] ->[]
+    | _ -> List.sort list
+
+let listInsert v list=
+    //inner recursive function
+    let rec insert output sortedl =
+        match sortedl with
+        |[] -> output
+        |a::rest -> if a > v then  
+                        builtinrevers(rest @ (v::a::output))// if a is greater than v, then insert v before and leave if statement  
+                    else 
+                        insert (a::output) rest
+
+    insert []  (listSort <|list)
+
+listInsert 5 unsorted 
