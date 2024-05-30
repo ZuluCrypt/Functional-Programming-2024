@@ -58,3 +58,74 @@ let built_in_listtake n l =
     takeElements [] n l
 built_in_listtake 3 built_in_list
 
+//Trees
+//Tree data type : this is a data type that specifies the structure of a tree using sum types.
+
+type Tree<'a> = 
+    //so will set it up how a tree would look like , visulize the structure as you build the type
+    |EmptyTree
+    |TwoChildren of 'a * Tree<'a> * Tree<'a> // creates a parent + two children type
+    |RightOnly of 'a * Tree<'a> //creates a Parent with Right child node
+    |LeftOnly of 'a * Tree<'a> //creates a Parent with left child node
+    |NoChildren of 'a // crates a node only
+
+EmptyTree
+TwoChildren(2,NoChildren(1),NoChildren(4))
+RightOnly(2,EmptyTree)
+let test1 = TwoChildren(2.5,TwoChildren(2,NoChildren(1),NoChildren(4)),TwoChildren(4,NoChildren(6),NoChildren(8)))
+
+//function to help us structure all neft subtree
+let leftSub =
+    function 
+    |EmptyTree  -> EmptyTree
+    |RightOnly _ -> EmptyTree
+    |NoChildren _ -> EmptyTree
+    |LeftOnly (_,tree) -> tree
+    |TwoChildren(_,tree,_) -> tree
+
+leftSub test1
+
+//function to c=view the right subtree
+let rightSub = 
+    function
+        |EmptyTree -> EmptyTree
+        |LeftOnly _ -> EmptyTree
+        |NoChildren _ -> EmptyTree
+        |RightOnly (_,tree) -> tree
+        |TwoChildren(_,_,tree) -> tree
+rightSub test1
+
+
+//***************************building 1 tree with blocks**********
+let leftSubtree = TwoChildren(9,NoChildren 8,NoChildren 9)
+
+let rightSubtree = TwoChildren(15,NoChildren 12,NoChildren 16)
+
+let test2 = TwoChildren(10,leftSubtree,rightSubtree)
+
+//********************************************************
+
+// function for Node-Left-Right traversal
+let rec treeNLR =
+//remembe
+    function
+    |EmptyTree -> []
+    |NoChildren x -> [x]
+    |RightOnly (x,tree) ->  [x] @ treeNLR tree // 
+    |LeftOnly(x , tree) ->  [x] @ treeNLR tree 
+    |TwoChildren(x,leftTree,rightTree)-> [x] @ treeNLR leftTree @ treeNLR rightTree 
+
+treeNLR test2
+
+//function fro traversing the tree using left-node-right traversal
+
+let rec treeLNR =
+    function
+    |EmptyTree -> []
+    |NoChildren x -> [x]
+    |RightOnly (x, tree) -> [x] @ treeLNR tree
+    |LeftOnly(x,tree) -> treeLNR tree @ [x]
+    |TwoChildren(x , lTree,rTree) -> treeLNR lTree @ [x] @ treeLNR rTree 
+    //knowing the structure is important
+treeLNR test2
+
