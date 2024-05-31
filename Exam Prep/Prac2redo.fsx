@@ -93,3 +93,30 @@ let listInsert v list=
     insert []  (listSort <|list)
 
 listInsert 5 unsorted 
+let lists = [[2;3;4;2];[4;4;2;1;4];[3;54;2;14]]
+let listMerge lists =
+    //inner recursive method to concatonate the lists
+    let rec flatten output l =
+        match l with
+        |[] -> output
+        |a::rest -> (flatten (a @ output) rest) |> listSort 
+    flatten [] lists
+
+listMerge lists
+
+// // Example MyList values
+// let list1 = Elements (1, Elements (2, Elements (3, Empty)))
+// let list2 = Elements (4, Elements (5, Empty))
+// let list3 = Elements (6, Empty)
+// let list4 = Empty
+
+// // List of MyList values
+// let listOfMyLists = [list1; list2; list3; list4]
+// // let genList = myFiveElementList , mylist
+// let genFlatten lists =
+//     let rec flatten output l =
+//         match l with    
+//         |[] -> output
+//         |a::rest-> flatten ( a @ output) rest
+//     flatten [] lists
+// genFlatten listOfMyLists
