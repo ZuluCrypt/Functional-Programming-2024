@@ -129,3 +129,21 @@ let rec treeLNR =
     //knowing the structure is important
 treeLNR test2
 
+// //tree insert function, to insert a value at the right position on the tree
+// let rec treeInsert v tree=
+//     match tree with
+//     |EmptyTree -> EmptyTree
+//     |TwoChildren(x,lTree,rTree) -> 
+//         if x = v then
+//             TwoChildren(v,lTree,rTree)
+//         elif x<v then
+//             TwoChildren(x, treeInsert v lTree, rTree)
+//         else
+//             TwoChildren(x,lTree, treeInsert v rTree)
+//     |LeftOnly(x,tree) -> 
+//         if x = v then 
+//             LeftOnly(x, tree)
+//         elif x < v then
+//             TwoChildren(x, treeInsert v tree,)
+//         else
+
