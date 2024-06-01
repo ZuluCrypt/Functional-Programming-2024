@@ -23,7 +23,7 @@ let reverse list=
     rev Empty list
 //********************************************************************************
 //List related Higher order functions
-//list.Map
+//list.Map, dirrect mapping for we usingthe same structure to create the new list
 let rec B_listMap func =
     function
     |[] -> []
@@ -31,12 +31,21 @@ let rec B_listMap func =
 
 B_listMap (fun x -> x + 2) [2;5;3;2;5]
 
-//list map for generic list
-let genListMap func list=
-    let rec map output l =
-        match l with
-        |Empty -> reverse(output)
-        |Elements(a,rest) -> map (push (func a) output) rest
-    map Empty list
+//list map for generic list, Direct mapping, Using the same datastructure
+let rec genListMap func=
+        function
+        |Empty -> Empty
+        |Elements(a,rest) -> Elements(func a, (genListMap func rest))
 
-genListMap (fun x -> x + 2) (Elements(2,Elements(3,Empty)))
+//Tail recusive and accumalator version(Good for bigger data, doesnt reach stack overflow)
+let rec genListMap2 func =
+    let rec map output=
+        function
+        |Empty-> reverse(output)
+        |Elements(a,rest) -> map (push (func a) output) rest
+    map Empty 
+  
+
+genListMap2 (fun x -> x + 2) (Elements(2,Elements(3,Empty)))
+
+//tree Functions
