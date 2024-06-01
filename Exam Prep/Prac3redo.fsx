@@ -21,12 +21,14 @@ let reverse list=
         |Empty -> output
         |Elements(a,rest)-> rev (push a output) rest
     rev Empty list
-let rec reverse2 =
-    function
-    |[] -> []
-    |a::rest -> a::reverse2 rest
-
-let test = reverse2 [1;2;3]
+let reverse2 list =
+    let rec reversing output l =
+        match l with
+        |[] -> output
+        |a::rest -> reversing (a::output) rest
+    reversing [] list
+    
+reverse2 [1;2;3]
 //********************************************************************************
 //List related Higher order functions
 //list.Map, dirrect mapping for we usingthe same structure to create the new list
@@ -73,3 +75,7 @@ let filter2 pFunc =
 
 filter (fun x -> x < 2) [2;5;1;0;5;4]
 filter2 (fun x -> x < 2) [2;5;1;0;5;4]
+
+
+
+
