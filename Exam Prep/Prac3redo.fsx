@@ -21,6 +21,12 @@ let reverse list=
         |Empty -> output
         |Elements(a,rest)-> rev (push a output) rest
     rev Empty list
+let rec reverse2 =
+    function
+    |[] -> []
+    |a::rest -> a::reverse2 rest
+
+let test = reverse2 [1;2;3]
 //********************************************************************************
 //List related Higher order functions
 //list.Map, dirrect mapping for we usingthe same structure to create the new list
@@ -48,4 +54,22 @@ let rec genListMap2 func =
 
 genListMap2 (fun x -> x + 2) (Elements(2,Elements(3,Empty)))
 
-//tree Functions
+//filter Functions, direct filtering FOR BUILT_IN LIST
+let rec filter pFunc =
+    function
+    |[] -> []
+    |a::rest -> if pFunc a then 
+                    a::filter pFunc rest 
+                else 
+                    filter pFunc rest
+
+//tail recursive filter for built_IN LIST
+let filter2 pFunc =
+    let rec filterList output =
+        function
+        |[] -> reverse2(output)
+        |a::rest -> if pFunc a then filterList (a::output) rest else filterList output rest
+    filterList []  
+
+filter (fun x -> x < 2) [2;5;1;0;5;4]
+filter2 (fun x -> x < 2) [2;5;1;0;5;4]
