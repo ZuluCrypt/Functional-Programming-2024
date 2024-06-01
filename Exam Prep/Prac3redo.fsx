@@ -3,6 +3,14 @@
 type myList<'a> =
     |Empty
     |Elements of 'a * myList<'a>
+
+type Tree<'a> =
+    |EmptyTree
+    |NoChidren of 'a 
+    |LeftOnly of 'a * Tree<'a>
+    |RightOnly of 'a * Tree<'a>
+    |TwoChildren of 'a * Tree<'a> * Tree<'a>
+
 //******************Auxillary functions********************************
 let push v l = Elements(v,l)//push
 let rec length list =
@@ -40,3 +48,7 @@ let genListMap func list=
     map Empty list
 
 genListMap (fun x -> x + 2) (Elements(2,Elements(3,Empty)))
+
+//tree mapping function, direct mapping -> iusing the same data structure
+//mapTree
+
