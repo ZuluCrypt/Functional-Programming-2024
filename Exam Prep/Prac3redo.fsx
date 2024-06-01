@@ -1,54 +1,36 @@
 // in this practical i will be looking at higher order functions and how to use them
 
-type myList<'a> =
-    |Empty
-    |Elements of 'a * myList<'a>
-
 type Tree<'a> =
     |EmptyTree
-    |NoChidren of 'a 
+    |NoChildren of 'a 
     |LeftOnly of 'a * Tree<'a>
     |RightOnly of 'a * Tree<'a>
     |TwoChildren of 'a * Tree<'a> * Tree<'a>
 
 //******************Auxillary functions********************************
-let push v l = Elements(v,l)//push
-let rec length list =
-    match list with
-    |[] -> 0
-    |_::rest -> 1 + length rest 
-    //length for built in list
-let rec length2 list =
-    match list with
-    |Empty -> 0
-    |Elements(_,nested) -> 1 + length2 nested
-    //length for generic list
-let reverse list=
-    let rec rev output l =
-        match l with
-        |Empty -> output
-        |Elements(a,rest)-> rev (push a output) rest
-    rev Empty list
-//********************************************************************************
-//List related Higher order functions
-//list.Map
-let rec B_listMap func =
-    function
-    |[] -> []
-    |a::rest -> func a :: B_listMap func rest
 
-B_listMap (fun x -> x + 2) [2;5;3;2;5]
+//***************************building 1 tree with blocks**********
+let leftSubtree = TwoChildren(9,NoChildren 8,NoChildren 9)
 
-//list map for generic list
-let genListMap func list=
-    let rec map output l =
-        match l with
-        |Empty -> reverse(output)
-        |Elements(a,rest) -> map (push (func a) output) rest
-    map Empty list
+let rightSubtree = TwoChildren(15,NoChildren 12,NoChildren 16)
 
-genListMap (fun x -> x + 2) (Elements(2,Elements(3,Empty)))
+let test2 = TwoChildren(10,leftSubtree,rightSubtree)
+
+//********************************************************
 
 //tree mapping function, direct mapping -> iusing the same data structure
+
 //mapTree
+let rec mapTree func =
+    function 
+    |EmptyTree -> EmptyTree
+    |NoChildren n -> NoChildren(func n)
+    |LeftOnly(n,l)-> LeftOnly(func n, mapTree func l)
+    |RightOnly(n,r) -> RightOnly(func n,mapTree func r)
+    |TwoChildren(n,l,r) -> TwoChildren(func n, mapTree func l,mapTree func r )
+
+mapTree (fun x -> x + 2) test2
+
+//tree mapping uising tail recursion and accumalator
+
 
