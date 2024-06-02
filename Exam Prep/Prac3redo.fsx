@@ -76,3 +76,18 @@ let filter2 pFunc =
 filter (fun x -> x < 2) [2;5;1;0;5;4]
 filter2 (fun x -> x < 2) [2;5;1;0;5;4]
 
+// traverses through the loist from left to righrt
+let rec listFoldl f acc =
+    function
+    |[] -> acc
+    |a::rest -> listFoldl f (f acc a) rest
+
+// traverses through data structure from right to left 
+let rec listFoldR f acc =
+    function
+    |[] -> acc
+    |a::rest -> f (listFoldR f acc rest) a
+
+listFoldl (fun state list ->  list::state ) [] [1;2;3] 
+listFoldR (fun state list ->  list::state  ) [] [1;2;3] 
+listFoldl (fun n _ -> n+1) 0 [5; 6; 9; 2; 1; 0; 3]
