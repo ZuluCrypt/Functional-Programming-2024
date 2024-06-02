@@ -106,3 +106,71 @@ listToTree [15;12]
 let treeFilter pfunc tree=
     treeNLR tree |> filter pfunc |> listToTree
 
+// fold functions for trees
+let rec treeFoldNLR f acc =
+    function
+    |EmptyTree -> acc
+    |NoChildren x -> f acc x
+    |RightOnly (x,r) -> treeFoldNLR f (f acc x) r
+    |LeftOnly(x,l) -> treeFoldNLR f (f acc x) l
+    |TwoChildren(x,l,r) -> treeFoldNLR f (treeFoldNLR f (f acc x) l) r
+
+let rec treeFoldLNR f acc =
+    function
+    |EmptyTree -> acc
+    |NoChildren x -> f acc x
+    |RightOnly(x , r ) -> treeFoldLNR f (f acc x) r
+    |LeftOnly(x,l) -> f (treeFoldLNR f acc l) x
+    |TwoChildren(x,l,r) -> treeFoldLNR f (f (treeFoldLNR f acc l) x) r
+
+let rec treeFoldRNL f acc =
+    function
+    |EmptyTree -> acc
+    |NoChildren x -> f acc x
+    |RightOnly(x,r) -> f (treeFoldRNL f acc r) x
+    |LeftOnly(x,l) -> treeFoldRNL f (f acc x) l
+    |TwoChildren(x,l,r) -> treeFoldRNL f (f (treeFoldRNL f acc r) x) l
+
+let treeNLR2 t = treeFoldNLR (fun acc x -> acc @ [x]) [] t
+
+treeNLR test2
+treeNLR2 test2
+let treeLNR2 t = treeFoldLNR (fun acc x -> acc @ [x]) [] t
+
+treeLNR test2
+treeLNR2 test2
+
+let  treeExists pfunc tree =
+    let list = treeNLR tree
+    let rec existOrNot l =
+        match l with
+        |[] -> false
+        |a::rest -> if pfunc a then true else existOrNot rest
+    existOrNot list
+
+
+treeExists (fun x -> if x = 6 then true else false) test2
+
+let rec listForAll pfunc list =
+//function to test if false can be found
+    let rec findfalse l=
+        match l with
+        |[] -> true
+        |a::rest -> if pfunc a = false then false else findfalse  rest
+        
+    match list with
+    |[] -> false
+    |_::_ -> findfalse list
+
+
+listForAll (fun x -> x % 2 = 0) [2;4;3]
+
+let listPartition pfunc list= 
+    let rec failsPredicate pfunc l =
+        match l with
+        |[] -> []
+        |a::rest -> if pfunc a = false then a::failsPredicate pfunc rest else failsPredicate pfunc rest
+
+    (filter pfunc list,failsPredicate pfunc list)
+    
+listPartition (fun x -> x % 2 = 0) [2;4;3]
