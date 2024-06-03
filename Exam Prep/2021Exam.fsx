@@ -51,6 +51,7 @@ let rec q9 fmap list =
             |([],_) -> output
             |(a::rest,b::nested) -> AddLists rest nested ((fmap a b)::output)
         AddLists list1 list2 []
+
     let rec isOdd output l =
         let rec duplicateMid output l mid =
              
@@ -60,7 +61,7 @@ let rec q9 fmap list =
             |(_,a::rest) -> duplicateMid (a::output) rest (mid - 1) 
 
         let newList = duplicateMid [] l ((length l) / 2  )
-        
+        isEven [] newList
 
 
     if len = 0 then 
@@ -71,3 +72,23 @@ let rec q9 fmap list =
         isOdd [] list
 
 q9 (+) [34;69;50;49;11;78]
+
+let sos l =
+    let pfunc x = x < 100
+    let rec squareList list =
+        match list with
+        |[] -> []
+        |a::rest -> (a*a)::squareList rest
+
+    let rec filter acc list =
+        (function
+        |[] -> acc
+        |a::rest -> if pfunc a then filter (a::acc) rest else filter acc rest
+        )list
+    let rec AddList l =
+        match l with
+        |[] -> 0
+        |a::rest -> a + AddList rest 
+    filter [] (squareList l) |> AddList
+
+sos [2;3;50]
