@@ -26,16 +26,7 @@ type Opperation =
     
 
 //Integers
-type Integers =
-    |One
-    |Two 
-    |Three 
-    |Four 
-    |Five 
-    |Six
-    |Seven
-    |Eight
-    |Nine
+
 type Result<'a,'b> =
     |Error of 'b
     |Result of 'a
