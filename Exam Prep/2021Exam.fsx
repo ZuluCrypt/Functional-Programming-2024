@@ -23,24 +23,34 @@ let rec length =
     function
     |[]-> 0
     |_::rest -> 1 + length rest
-let reverse =
+let reverse list =
     let rec reversing output=
         function
         |[]-> output
         |a::rest -> reversing (a::output) rest
-    reversing [] 
-let rec q8 fmap list =
-    let length = length list
+    reversing [] list
+let rec q9 fmap list =
+    let len = length list
     
 
     let rec isEven output l=
-        let reverse = reverse l
-        match (l,reverse) with 
-        |([],[]) -> output
-        |(_,[]) -> []
-        |([],_)-> []
-        |(a::rest , b::_) -> isEven ((fmap a b)::output) rest 
+        //split the list half way
+        let rec split i l acc =
+            match (i,l) with
+            |(0,a::rest) -> split (-1) rest (acc)
+            |(_,[]) -> acc
+            |(_,a::rest) -> split (i - 1) (rest) (a::acc)
 
+        let mid = length l
+        let list1 = split mid l []
+        let list2 = split mid (reverse l) []
+        let rec AddLists l1 l2 output =
+            match (l1,l2) with
+            |([],[]) -> output
+            |(_,[]) -> output
+            |([],_) -> output
+            |(a::rest,b::nested) -> AddLists rest nested ((fmap a b)::output)
+        AddLists list1 list2 []
     let rec isOdd output l =
         let rec duplicateMid output l mid =
              
@@ -50,12 +60,14 @@ let rec q8 fmap list =
             |(_,a::rest) -> duplicateMid (a::output) rest (mid - 1) 
 
         let newList = duplicateMid [] l ((length l) / 2  )
-        isEven [] newList
+        
 
 
-    if length = 0 then 
+    if len = 0 then 
         []
-    elif length % 2 = 0 then
+    elif (len % 2) = 0 then
         isEven [] list
     else
         isOdd [] list
+
+q9 (+) [34;69;50;49;11;78]
